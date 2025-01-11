@@ -2,12 +2,12 @@ import express from 'express'
 import cors from 'cors'
 import { authRouter } from './auth/auth'
 import { configDotenv } from 'dotenv'
-import { routesRouter } from './userRoutes/routes'
-
+import { activityRouter } from './userRoutes/routes'
+import {  PrismaClient } from '@prisma/client'
 configDotenv()
 const app=express()
 
-
+export const prisma=new PrismaClient()
 declare global {
     namespace Express {
       interface Request {
@@ -26,7 +26,7 @@ app.use(express.json())
 
 
 app.use("/auth",authRouter)
-app.use("/user",routesRouter)
+app.use("/user",activityRouter)
 app.listen(3000)
 // signup
 //sign in
