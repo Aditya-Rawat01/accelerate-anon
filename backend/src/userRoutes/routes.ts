@@ -1,11 +1,16 @@
 import express from 'express'
 import { authMiddleware } from '../auth/authMiddleware'
 import { prisma } from '..'
-import { activitySchema } from '../zodSchema'
+import { activitySchema, enumArray, updateUserSchema } from '../zodSchema'
 
 
 export const activityRouter=express.Router()
 
+
+interface dataInterface {
+    workingDays?:enumArray[],
+    activity?:string
+}
 
 activityRouter.get("/activity",authMiddleware,async(req,res)=>{ /// get all 3 activity details
     try {
@@ -140,6 +145,45 @@ activityRouter.post("/completed/:activityId",authMiddleware,async(req,res)=>{   
             "msg":"Error occured. Try again"
         })
     }
+    
+})
+activityRouter.post("/update/:activityId",authMiddleware,async(req,res)=>{
+    const activityId=req.params.activityId
+    const {workingDays, activity}=req.body
+    const parsed=updateUserSchema.safeParse({workingDays, activity})
+    if (!parsed.success) {
+            res.status(411).json({
+                "msg":"Invalid Entries. Please provide correct formats"
+            }) 
+            return;}
+    const dataToUpdate:dataInterface={};
+
+    if (workingDays!==undefined) {
+            dataToUpdate.workingDays=workingDays
+        }
+    if (activity!==undefined) {
+            dataToUpdate.activity=activity
+        }
+       
+    try {                                       //    Object.keys(dataToUpdate).length==0 or activity id can be wrong
+        await prisma.activity.update({
+            where:{
+                id:parseInt(activityId),
+                userId: parseInt(req.id)
+            },
+            data:dataToUpdate
+        })
+        res.json({
+            "msg":"Updated"
+        })
+    } catch {
+        res.json({
+            "msg":"Nothing to update/ Wrong activityId"
+        })
+        
+    }
+        
+    
     
 })
 

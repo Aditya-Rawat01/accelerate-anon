@@ -14,8 +14,14 @@ export const userSignin=zod.object({
 })
 
 const workingDay=zod.enum(["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
+export type enumArray=zod.infer<typeof workingDay>
 export const activitySchema=zod.object({
         activity:zod.string(),
         totalDays:zod.number(),
         workingDays:zod.array(workingDay)
     })
+
+export const updateUserSchema=zod.object({
+    workingDays:zod.array(workingDay).optional(),
+    activity: zod.string().optional()
+})
