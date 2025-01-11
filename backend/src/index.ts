@@ -11,7 +11,8 @@ export const prisma=new PrismaClient()
 declare global {
     namespace Express {
       interface Request {
-        token:string
+        token:string,
+        id:string
       }
     }
   }
@@ -28,9 +29,9 @@ app.use(express.json())
 app.use("/auth",authRouter)
 app.use("/user",activityRouter)
 app.listen(3000)
-// signup
-//sign in
-//get all info
+// signup (done)
+//sign in  (done)
+//get all info 
 //post new info
 //update info
 //delete new info

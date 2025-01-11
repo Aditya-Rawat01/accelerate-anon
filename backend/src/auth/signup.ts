@@ -14,14 +14,17 @@ async function signupMiddleware(req:Request, res:Response, next:NextFunction) {
     }
     else {
         try {
-            await prisma.user.create({
+            const newUser=await prisma.user.create({
            data:{
                 username,
                 email,
                 password
             }    
          })
-         const token=jwt.sign({email},process.env.JWT_SECRET as string)
+         const id=newUser.id
+         const token=jwt.sign({id},process.env.JWT_SECRET as string,{
+            expiresIn:'7d'
+        })
             req.token=token
             next() 
         } catch (error) {

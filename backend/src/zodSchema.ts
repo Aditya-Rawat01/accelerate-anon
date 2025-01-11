@@ -12,3 +12,10 @@ export const userSignin=zod.object({
     email: zod.string().email("Provide valid Email").transform((val)=>val.toLowerCase()),
     password: zod.string().min(5, "Provide 5 or more characters")
 })
+
+const workingDay=zod.enum(["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
+export const activitySchema=zod.object({
+        activity:zod.string(),
+        totalDays:zod.number(),
+        workingDays:zod.array(workingDay)
+    })

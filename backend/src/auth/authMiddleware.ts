@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 export function authMiddleware(req:Request, res:Response,next:NextFunction) {
     const token=req.headers.authorization
     if (token) {
         try {
-          jwt.verify(token,process.env.JWT_SECRET as string) 
-        
+          const tokenDecoded=jwt.verify(token,process.env.JWT_SECRET as string) as JwtPayload
+          req.id=tokenDecoded.id
           next() 
         } catch (error) {
             res.status(403).json({

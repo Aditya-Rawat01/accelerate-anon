@@ -1,1 +1,2 @@
 JWT_SECRET="Your Jwt secret"
+DATABASE_URL="Your Db url"

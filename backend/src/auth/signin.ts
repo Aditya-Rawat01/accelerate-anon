@@ -21,7 +21,10 @@ async function signinMiddleware(req:Request, res:Response, next:NextFunction) {
                     }
                 })
             if (userExists) {
-                const token=jwt.sign({email},process.env.JWT_SECRET as string)
+                const id=userExists.id
+                const token=jwt.sign({id},process.env.JWT_SECRET as string,{
+                    expiresIn:'7d'
+                })
                 req.token=token
                 next()
             }

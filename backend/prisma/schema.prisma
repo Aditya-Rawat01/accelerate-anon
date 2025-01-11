@@ -40,8 +40,8 @@ model Activity {
   id Int @default(autoincrement()) @id
   activity String
   progress Float
-  totalDays DateTime
-  currentDay DateTime
+  totalDays Int
+  currentDay Int
   workingDays Days[]
   createdAt DateTime @default(now())
   lastUpdatedAt DateTime @updatedAt
