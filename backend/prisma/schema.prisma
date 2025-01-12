@@ -52,7 +52,7 @@ model Activity {
 
 model Dashboard {
   id Int @default(autoincrement()) @id
-  completedActivites Int
+  completedActivities Int @default(0)
   streak Int
   userId Int @unique
   user User @relation(fields: [userId], references: [id])

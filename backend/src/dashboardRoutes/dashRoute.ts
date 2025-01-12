@@ -21,20 +21,20 @@ dashboardRouter.get("/",authMiddleware,async(req,res)=>{
     })
 })
 dashboardRouter.post("/update",authMiddleware,async(req,res)=>{
-    const {completedActivites, streak} = req.body
-    const parsedSchema=dashboardSchema.safeParse({completedActivites, streak})
+    const {completedActivities, streak} = req.body
+    const parsedSchema=dashboardSchema.safeParse({completedActivities, streak})
     if (!parsedSchema.success) {
         res.status(403).json({
             "msg":"Invalid entries"
         })
     } else {
         const valuesToUpdate:dashboardType={}
-        if (!completedActivites) {
-            valuesToUpdate.completedActivities=completedActivites
+        if (completedActivities) {
+            valuesToUpdate.completedActivities=completedActivities
         }
-        if (!streak) {
+        if (streak) {
             valuesToUpdate.streak=streak // entire streak and activities completed will have to be passed from frontend
-        }
+        }                              // streak can be updated by using lastUpdatedAt (maybe)
         try {
             await prisma.dashboard.update({
                 where:{

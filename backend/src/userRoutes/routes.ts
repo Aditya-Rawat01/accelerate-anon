@@ -107,7 +107,7 @@ activityRouter.post("/progress/:activityId",authMiddleware,async(req,res)=>{  //
         })
     } else {
         res.status(403).json({
-            "msg":"Progress can't be negative"
+            "msg":"Invalid progress"
         })
     }
     
@@ -200,4 +200,3 @@ activityRouter.delete("/delete/:activityId",authMiddleware,async(req,res)=>{    
         "msg":"Activity deleted successfully"
     })
 })
-/// add update activity (workingDays, activity name)

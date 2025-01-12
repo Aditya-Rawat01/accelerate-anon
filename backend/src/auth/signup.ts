@@ -40,7 +40,6 @@ signupRouter.post("/",signupMiddleware,async(req,res)=>{
     try {
       const dash=await prisma.dashboard.create({
         data:{
-            completedActivites:0,
             streak:0,
             userId:parseInt(req.id)
         }
