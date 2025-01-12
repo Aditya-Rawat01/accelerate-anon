@@ -4,6 +4,7 @@ import { authRouter } from './auth/auth'
 import { configDotenv } from 'dotenv'
 import { activityRouter } from './userRoutes/routes'
 import {  PrismaClient } from '@prisma/client'
+import { dashboardRouter } from './dashboardRoutes/dashRoute'
 configDotenv()
 const app=express()
 
@@ -28,10 +29,11 @@ app.use(express.json())
 
 app.use("/auth",authRouter)
 app.use("/user",activityRouter)
+app.use("/dash",dashboardRouter)
 app.listen(3000)
 // signup (done)
 //sign in  (done)
-//get all info 
-//post new info
-//update info
-//delete new info
+//get all info (done)
+//post new info (done)
+//update info (done)
+//delete new info (done)

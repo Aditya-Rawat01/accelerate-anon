@@ -21,8 +21,8 @@ async function signupMiddleware(req:Request, res:Response, next:NextFunction) {
                 password
             }    
          })
-         const id=newUser.id
-         const token=jwt.sign({id},process.env.JWT_SECRET as string,{
+         req.id=newUser.id as unknown as string
+         const token=jwt.sign({id:req.id},process.env.JWT_SECRET as string,{
             expiresIn:'7d'
         })
             req.token=token
@@ -36,11 +36,23 @@ async function signupMiddleware(req:Request, res:Response, next:NextFunction) {
 }
 
 
-signupRouter.post("/",signupMiddleware,(req,res)=>{
-    res.json({
-    
-        "msg":"Signed up successfully",
-        "token":req.token
+signupRouter.post("/",signupMiddleware,async(req,res)=>{
+    try {
+      const dash=await prisma.dashboard.create({
+        data:{
+            completedActivites:0,
+            streak:0,
+            userId:parseInt(req.id)
+        }
+      })
+      res.json({
+        "token":req.token,
+        "dashboard":dash
+      })  
+    } catch (error) {
+        res.json({
+            "msg":"Error while signing up.Try again"
+          })
     }
-    )
+    
 })
