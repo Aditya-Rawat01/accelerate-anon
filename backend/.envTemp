@@ -1,2 +1,7 @@
 JWT_SECRET="Your Jwt secret"
 DATABASE_URL="Your DATABASE_URL"
+
+MAIL="Mail from which you want to send mails"
+MAIL_PASS="password generated from google manager"
+// To generate password, set up 2 factor authentication for the google account then go to app passwords under security and generate new app
+// this wil create a random string for password. Paste that in MAIL_PASS

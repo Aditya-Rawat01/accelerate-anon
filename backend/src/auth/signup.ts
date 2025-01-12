@@ -55,3 +55,6 @@ signupRouter.post("/",signupMiddleware,async(req,res)=>{
     }
     
 })
+
+
+/// there should be delete account api which delete the user, dashboard, activity adn dont send emails to them
