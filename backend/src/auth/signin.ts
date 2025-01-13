@@ -6,7 +6,7 @@ import { prisma } from '..'
 export const signinRouter=express.Router()
 
 async function signinMiddleware(req:Request, res:Response, next:NextFunction) {
-    const { email, password}=req.body
+    const {email, password}=req.body
     const validRes=userSignin.safeParse({email, password})
     if (!validRes.success) {
         res.status(411).json({
@@ -14,25 +14,35 @@ async function signinMiddleware(req:Request, res:Response, next:NextFunction) {
         })
     }
     else {
+        try {
             const userExists=await prisma.user.findFirst({
-                    where:{
-                        email,
-                        password
-                    }
-                })
-            if (userExists) {
-                const id=userExists.id
-                const token=jwt.sign({id},process.env.JWT_SECRET as string,{
-                    expiresIn:'7d'
-                })
-                req.token=token
-                next()
-            }
-            else {
-                res.status(403).json({
-                    "msg":"Email don't exists. Try signing up"
-                })
-            }
+                where:{
+                    email
+                }
+            })
+        if (userExists && userExists.password===password) {
+            const id=userExists.id
+            const token=jwt.sign({id},process.env.JWT_SECRET as string,{
+                expiresIn:'7d'
+            })
+            req.token=token
+            next()
+        } else if (userExists?.password!==password && userExists) {
+            res.status(403).json({
+                "msg":"Wrong password! Try Again"
+            })
+        }
+        else {
+            res.status(404).json({
+                "msg":"Email don't exists. Try signing up"
+            })
+        }
+        } catch (error) {
+            res.status(500).json({
+                "msg":"Server error."
+            })
+        }
+            
             
     }
 }

@@ -49,7 +49,7 @@ signupRouter.post("/",signupMiddleware,async(req,res)=>{
         "dashboard":dash
       })  
     } catch (error) {
-        res.json({
+        res.status(500).json({
             "msg":"Error while signing up.Try again"
           })
     }
