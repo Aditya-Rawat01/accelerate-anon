@@ -11,7 +11,8 @@ export function emailScheduler() {
                 select:{
                   activity:true,
                   username:true,
-                  email:true
+                  email:true,
+                  receiveEmail:true
                 }
               })
               if (!users || users.length===0) {
@@ -24,6 +25,9 @@ export function emailScheduler() {
             // Add more better logic for selecting users
               for (let i=0;i<users.length;i++) {
                 const randomUser=users[i]
+                if (randomUser.receiveEmail===false) {
+                  return 
+                }
                 if (randomUser.activity.length===0) {
                   console.log(`No activity found for user: ${randomUser.username}`)
                   return

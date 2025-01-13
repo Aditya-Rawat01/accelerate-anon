@@ -19,7 +19,7 @@ model User {
   username String
   password String
   activity Activity[]
-
+  receiveEmail Boolean @default(true)
   dashboard Dashboard?
   
 }
