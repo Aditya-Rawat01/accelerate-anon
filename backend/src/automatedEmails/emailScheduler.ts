@@ -1,6 +1,7 @@
 import cron from 'node-cron'
 import nodemailer from 'nodemailer'
 import { prisma } from '..'
+import { MailSelector } from './mailSelector'
 
 
 export function emailScheduler() {
@@ -19,21 +20,23 @@ export function emailScheduler() {
               }
 
 
-            // --------choose more than one person at a time -----------------
+            // choosing all people at once
             // Add more better logic for selecting users
-              const randomUser=users[Math.floor((Math.random()*users.length))] 
-
-              if (randomUser.activity.length===0) {
-                console.log(`No activity found for user: ${randomUser.username}`)
-                return
+              for (let i=0;i<users.length;i++) {
+                const randomUser=users[i]
+                if (randomUser.activity.length===0) {
+                  console.log(`No activity found for user: ${randomUser.username}`)
+                  return
+                }
+  
+                const randomActivity=randomUser.activity[Math.floor((Math.random()*randomUser.activity.length))].activity
+                const text=MailSelector(randomUser.username,randomActivity)
+                /// add more motivation email templates (sort of done)
+                
+                
+                MailSender(randomUser.email,text)
               }
-
-              const randomActivity=randomUser.activity[Math.floor((Math.random()*randomUser.activity.length))].activity
-              const text=`Hi ${randomUser.username}, Hope you are doing well. You are doing great actually. Just by doing something, you are moving and by moving you are progressing. I see you are currently busy in this "${randomActivity}" activity. Wish you best to deliever this on time. Great day to you`
-              /// add more motivation email templates
               
-              
-              MailSender(randomUser.email,text)
               
         } catch (error) {
             console.log("Error in email scheduler function")
@@ -59,7 +62,7 @@ function MailSender(email:string,activity:string) {
         from:process.env.MAIL,
         to:email,
         subject:"Accelerate Anon",
-        text:activity
+        html:activity
 
     }
 

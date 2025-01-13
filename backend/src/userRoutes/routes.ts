@@ -50,8 +50,11 @@ activityRouter.post("/activity",authMiddleware,async (req,res)=>{   /// post new
         await prisma.$transaction(async (prisma)=>{
             const activityCount=await prisma.activity.count({
                 where:{
-                    userId:parseInt(req.id)
-                }
+                    userId:parseInt(req.id),  
+                    progress: {                 // this makes sure that active activity stays <=3
+                        not:100
+                    }
+                },
             })
             if (activityCount===3) {
                 res.status(403).json({
