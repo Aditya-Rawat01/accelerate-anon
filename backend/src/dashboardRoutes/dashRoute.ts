@@ -54,3 +54,47 @@ dashboardRouter.post("/update",authMiddleware,async(req,res)=>{
     }
     
 })
+dashboardRouter.post("/subscribeEmail",authMiddleware,async(req,res)=>{
+    try {
+      await prisma.user.update({
+        where:{
+            id:parseInt(req.id)
+        },
+        data:{
+            receiveEmail:true
+        }
+    })
+    res.json({
+        "msg":"Subscribed successfully"
+
+    })  
+    } catch (error) {
+        res.status(500).json({
+            "msg":"Server Error"
+        })
+    }
+    })
+
+
+
+dashboardRouter.post("/unsubscribeEmail",authMiddleware,async(req,res)=>{
+    try {
+      await prisma.user.update({
+        where:{
+            id:parseInt(req.id)
+        },
+        data:{
+            receiveEmail:false
+        }
+    })
+    res.json({
+        "msg":"Unsuscribed Successfully"
+    }) 
+     
+    } catch (error) {
+        res.status(500).json({
+            "msg":"Server Error"
+        })
+    }
+    
+})
