@@ -4,13 +4,18 @@ import axios from "axios";
 
 
 async function unsubEmail() {
-    const res=await axios.post(`${URI}/dash/unsubscribeEmail`,{},{
+    try {
+       const res=await axios.post(`${URI}/dash/unsubscribeEmail`,{},{
         headers:{
             Authorization:localStorage.getItem("token")
         }
     })
     localStorage.removeItem("token")
-    return res.data.msg
+    return res.data.msg 
+    } catch (error:any) { // wrong prac
+        return error.response.data.msg
+    }
+    
 }
 
 
