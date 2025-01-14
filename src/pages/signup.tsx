@@ -11,7 +11,7 @@ const userSignup=zod.object({
 
 })
 
-interface ErrorWorkableSchema {
+export interface ErrorWorkableSchema {
     response:{
         data:{
             msg:string
