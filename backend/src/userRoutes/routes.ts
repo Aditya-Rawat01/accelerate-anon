@@ -93,7 +93,7 @@ activityRouter.post("/activity",authMiddleware,async (req,res)=>{   /// post new
 activityRouter.post("/progress/:activityId",authMiddleware,async(req,res)=>{  //// post progress in one activity
     const activityId=req.params.activityId
     const progress=parseInt(req.body.progress)
-    if (progress>0 && progress<100) {
+    if (progress>0 && progress<=100) {
         const ans=await prisma.activity.update({
             where:{
                 id:parseInt(activityId),
@@ -120,24 +120,20 @@ activityRouter.post("/progress/:activityId",authMiddleware,async(req,res)=>{  //
 activityRouter.post("/completed/:activityId",authMiddleware,async(req,res)=>{    /// post completed in one activity
     const activityId=req.params.activityId
     try {
-        const totalDays=await prisma.activity.findFirst({
+        await prisma.activity.delete({
             where:{
                 id:parseInt(activityId),
                 userId:parseInt(req.id)
-            },
-            select:{
-                totalDays:true
             }
         })
-        const ans=await prisma.activity.update({
+        await prisma.dashboard.update({
             where:{
-                id:parseInt(activityId),
                 userId:parseInt(req.id)
             },
-            
-            data: {
-                progress:100.00, 
-                currentDay:totalDays?.totalDays
+            data:{
+                completedActivities:{
+                    increment:1
+                }
             }
         })
         res.json({
