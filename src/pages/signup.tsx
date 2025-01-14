@@ -32,7 +32,7 @@ export function Signup() {
                 email:data.email,
                 password:data.password
             })
-            localStorage.setItem("token",res.data.msg.token)
+            localStorage.setItem("token",res.data.token)
             router("/dashboard")
            
         } catch (error:ErrorWorkableSchema|unknown) {

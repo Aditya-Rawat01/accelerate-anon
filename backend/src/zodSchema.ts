@@ -13,7 +13,7 @@ export const userSignin=zod.object({
     password: zod.string().min(5, "Provide 5 or more characters")
 })
 
-const workingDay=zod.enum(["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
+const workingDay=zod.enum(["Mon","Tue","Wed","Thu","Fri","Sat","Sun"])
 export type enumArray=zod.infer<typeof workingDay>
 export const activitySchema=zod.object({
         activity:zod.string(),

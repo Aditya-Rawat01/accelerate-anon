@@ -1,5 +1,5 @@
-import { ActivityTab } from "../components/activityTab";
-import { Dashboard } from "../components/dashboard";
+import { ActivityTab } from "../MyComponents/activityTab";
+import { Dashboard } from "../MyComponents/dashboard";
 
 export function User() {
     return (
