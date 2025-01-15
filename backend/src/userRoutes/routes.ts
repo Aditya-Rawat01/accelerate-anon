@@ -60,6 +60,7 @@ activityRouter.post("/activity",authMiddleware,async (req,res)=>{   /// post new
                 res.status(403).json({
                     "msg":"Focus on the pending 3 tasks first"
                 })
+                return
             } else {
                 try {
                     await prisma.activity.create({
@@ -72,6 +73,9 @@ activityRouter.post("/activity",authMiddleware,async (req,res)=>{   /// post new
                         userId: parseInt(req.id)
                     }
                 })
+                res.json({
+                    "msg":"Added new activity"
+                })
                 } catch (error) {
                     res.status(500).json({
                         "msg":"Query crashed. Retry again"
@@ -79,9 +83,7 @@ activityRouter.post("/activity",authMiddleware,async (req,res)=>{   /// post new
                     return;
                 }}
         })
-        res.json({
-            "msg":"Added new activity"
-        })
+        
     } else {
         res.status(403).json({
             "msg":"Invalid Entries. Please provide correct formats"

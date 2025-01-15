@@ -1,5 +1,5 @@
 import { URI } from "@/assets/URI";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 
@@ -21,7 +21,7 @@ async function postActivity({data,ref}:{data: {
           })
           return res.data.msg
     } catch (error) {
-        throw new Error((error as any) )
+        throw error
     }
     
 }
@@ -29,7 +29,7 @@ async function postActivity({data,ref}:{data: {
 
 
 export function usePostActivity() {
-    const queryClient=new QueryClient()
+    const queryClient=useQueryClient()
     return useMutation({
         mutationFn:postActivity,
         onSuccess:()=>{queryClient.invalidateQueries({queryKey:["getActivity"]})}

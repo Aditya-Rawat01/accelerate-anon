@@ -11,7 +11,7 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import zod from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ErrorWorkableSchema } from "@/pages/signup"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { usePostActivity } from "@/datafetchinghooks/postActivity"
 const zodSchema=zod.object({
   activity:zod.string().min(1,"Activity name must be provided"),
@@ -21,7 +21,8 @@ const zodSchema=zod.object({
 type formFields=zod.infer<typeof zodSchema>
 export function AddActivity({value}:{value:string}) {
   const workingDayRef=useRef<string[]>([])
-  const {register, handleSubmit, formState:{errors, isSubmitting},setError}=useForm<formFields>({
+  const [open,setOpen]=useState(false)
+  const {register, handleSubmit, formState:{errors, isSubmitting},setError, reset}=useForm<formFields>({
     resolver:zodResolver(zodSchema),
     defaultValues:{
       activity:"",
@@ -38,9 +39,15 @@ export function AddActivity({value}:{value:string}) {
             return
           }
           mutate({data:data, ref:workingDayRef.current},{
-            onError:(error:any)=>setError("root",{
-              message:error.response.data.msg
+            onSuccess:()=>{
+              setOpen(false)
+            },
+            onError:(error:any)=>{
+              console.log(error)
+              setError("root",{
+              "message":error.response.data.msg
           })
+        }
           })
   } catch (error:ErrorWorkableSchema|unknown) {
       const ErrorVal=(error as ErrorWorkableSchema) // bad practice
@@ -50,7 +57,7 @@ export function AddActivity({value}:{value:string}) {
   }
   }
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
   <DialogTrigger>{value}</DialogTrigger>
   <DialogContent>
     <DialogHeader>

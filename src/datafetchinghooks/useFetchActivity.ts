@@ -16,8 +16,8 @@ export function useFetchActivity() {
     const {data, isFetching, isLoading, error, isError}= useQuery({
         queryKey:["getActivity"],
         queryFn:FetchActivity,
-        refetchOnWindowFocus:false
-    
+        refetchOnWindowFocus:false,
+        placeholderData:(prevData)=>prevData
     })
     return {
         data,
