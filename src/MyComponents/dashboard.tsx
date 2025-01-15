@@ -16,7 +16,7 @@ export function Dashboard() {
     const {data, error, isFetching, isError}=useGetDashboard()
     const obj:userDash=data
     return (
-        <div className="w-full h-1/4 bg-black text-white flex items-center justify-around">
+        <div className="w-full h-1/4 bg-black text-white flex items-center justify-around flex-wrap">
             <div className="absolute top-0 left-1/2 -translate-x-1/2">
                 {isFetching && <div>Loader</div>}
                 {isError && <div>{error.message}</div>}

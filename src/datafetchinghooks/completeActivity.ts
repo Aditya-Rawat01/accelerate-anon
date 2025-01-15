@@ -12,7 +12,7 @@ async function completeActivity({activityId}:{activityId:number}) {
     })
     return res.data.msg 
     } catch (error) {
-       throw new Error((error as any).response.data.msg) 
+       throw error
     }
     
 }

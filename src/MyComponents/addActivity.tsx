@@ -18,8 +18,12 @@ const zodSchema=zod.object({
   TotalDays:zod.number()
 })
 
+import { useToast } from "@/hooks/use-toast"
+import { Toaster } from "@/components/ui/toaster"
+
 type formFields=zod.infer<typeof zodSchema>
 export function AddActivity({value}:{value:string}) {
+  const { toast } = useToast()
   const workingDayRef=useRef<string[]>([])
   const [open,setOpen]=useState(false)
   const {register, handleSubmit, formState:{errors, isSubmitting},setError, reset}=useForm<formFields>({
@@ -40,8 +44,12 @@ export function AddActivity({value}:{value:string}) {
           }
           setOpen(false)
           mutate({data:data, ref:workingDayRef.current},{
-            onSuccess:()=>{
-              // handle the toast success
+            onSuccess:(data)=>{
+              toast({
+                title: data,
+                duration:2000
+              })
+            
               reset({
                 activity:'',
                 TotalDays:1
@@ -49,9 +57,11 @@ export function AddActivity({value}:{value:string}) {
             },
             onError:(error:any)=>{
               console.log(error)
-              setError("root",{  // handle the toast error
-              "message":error.response.data.msg
-          })
+              toast({
+                title: error.response.data.msg,
+                duration:2000
+              })
+            
         }
           })
   } catch (error:ErrorWorkableSchema|unknown) {
@@ -62,6 +72,7 @@ export function AddActivity({value}:{value:string}) {
   }
   }
     return (
+      <>
         <Dialog open={open} onOpenChange={setOpen}>
   <DialogTrigger className="text-xl">{value}</DialogTrigger>
   <DialogContent>
@@ -100,6 +111,7 @@ export function AddActivity({value}:{value:string}) {
       </form>
   </DialogContent>
 </Dialog>
-
+<Toaster/>
+</>
     )
 }

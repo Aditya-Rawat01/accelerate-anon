@@ -74,7 +74,7 @@ activityRouter.post("/activity",authMiddleware,async (req,res)=>{   /// post new
                     }
                 })
                 res.json({
-                    "msg":"Added new activity"
+                    "msg":"New activity added"
                 })
                 } catch (error) {
                     res.status(500).json({
@@ -139,7 +139,7 @@ activityRouter.post("/completed/:activityId",authMiddleware,async(req,res)=>{   
             }
         })
         res.json({
-            "msg":"Completed"
+            "msg":"Congratulations, activity completed"
         }) 
     } catch (error) {
         res.status(500).json({
@@ -175,7 +175,7 @@ activityRouter.post("/update/:activityId",authMiddleware,async(req,res)=>{
             data:dataToUpdate
         })
         res.json({
-            "msg":"Updated"
+            "msg":"Progressed! Keep it up."
         })
     } catch {
         res.json({

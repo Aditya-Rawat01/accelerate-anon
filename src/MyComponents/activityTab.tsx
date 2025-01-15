@@ -30,8 +30,8 @@ export function ActivityTab() {
             return <div key={index.id} className="w-[99%] relative h-28 border border-dotted border-gray-700 rounded-2xl grid grid-cols-12 grid-rows-12 ">
                 <div className="row-start-6 text-xl place-self-center col-span-12">Activity:{index.activity}</div>
                 <div className="absolute right-2 top-1">
-                    <p className="text-xs md:text-sm">Current Day:{index.currentDay.toString()}</p>
-                    <p className="text-xs md:text-sm">Total Day:{index.totalDays.toString()}</p>
+                    <p className="text-[8px] sm:text-xs md:text-sm">Current Day:{index.currentDay.toString()}</p>
+                    <p className="text-[8px] sm:text-xs md:text-sm">Total Day:{index.totalDays.toString()}</p>
                 </div>
                 <div className="row-start-11 col-span-12 relative place-items-end h-fit">
                     
@@ -40,7 +40,7 @@ export function ActivityTab() {
    
                     
                     </p>
-                    <p className="pr-2 text-xs sm:text-sm">Last Updated At: {index.lastUpdatedAt.toString().substring(0,10)}</p>
+                    <p className="pr-2 text-[8px] sm:text-xs md:text-sm">Last Updated At: {index.lastUpdatedAt.toString().substring(0,10)}</p>
                 </div>
             </div>
         })}

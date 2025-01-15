@@ -24,15 +24,30 @@ import { useCompleteActivity } from "@/datafetchinghooks/completeActivity"
 import { useRef, useState } from "react"
 import { activityArr } from "./activityTab"
 import { useUpdateActivity } from "@/datafetchinghooks/updateActivity"
+import { useToast } from "@/hooks/use-toast"
 
 export function ActivityCompletion({index}:{index:activityArr}) {
+  const {toast}=useToast()
   const [open,setOpen]=useState(false)
     const {mutate, isPending}=useCompleteActivity()
-    const {mutate:mutateActivity, isPending:isPendingActivity}=useUpdateActivity()
+    const {mutate:mutateActivity}=useUpdateActivity()
     const isValidProgress=useRef(true)
     function CompletedActivity() {
         setOpen(false)
-        mutate({activityId:index.id})
+        mutate({activityId:index.id},{
+          onSuccess:(data)=>{
+            toast({
+              title: data,
+              duration:2000
+            })
+          },
+          onError:(error:any)=>{
+            toast({
+              title: error.response.data.msg,
+              duration:2000
+            })
+          }
+        })
     }
 
     function updateActivity() {
@@ -42,7 +57,20 @@ export function ActivityCompletion({index}:{index:activityArr}) {
         if (progress===100) {
           isValidProgress.current=false
         }
-        mutateActivity({activityId:index.id, progress})
+        mutateActivity({activityId:index.id, progress},{
+          onSuccess:(data)=>{
+            toast({
+              title: data,
+              duration:2000
+            })
+          },
+          onError:(error:any)=>{
+            toast({
+              title: error.response.data.msg,
+              duration:2000
+            })
+          }
+        })
       }
       
     }
@@ -94,14 +122,7 @@ export function ActivityCompletion({index}:{index:activityArr}) {
                             </DrawerFooter>
                         </DrawerContent>
                         </Drawer>
-
-                 
-
-
-
-
-
-    
+                        
       </>
       )
 }

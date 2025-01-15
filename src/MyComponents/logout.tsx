@@ -20,5 +20,5 @@ export function Logout() {
         return <>{error.message}. Try refreshing page</>
     }
     return (
-       <button className="bg-red-400 p-3 rounded-full" onClick={DeleteToken}>Logout</button>)
+       <button className="bg-white text-black p-2 rounded-full text-xs absolute right-2 top-2" onClick={DeleteToken}>Logout</button>)
 }
