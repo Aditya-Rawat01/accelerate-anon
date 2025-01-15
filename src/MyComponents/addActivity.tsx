@@ -41,6 +41,10 @@ export function AddActivity({value}:{value:string}) {
           mutate({data:data, ref:workingDayRef.current},{
             onSuccess:()=>{
               setOpen(false)
+              reset({
+                activity:'',
+                TotalDays:1
+              })
             },
             onError:(error:any)=>{
               console.log(error)
@@ -58,7 +62,7 @@ export function AddActivity({value}:{value:string}) {
   }
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-  <DialogTrigger>{value}</DialogTrigger>
+  <DialogTrigger className="text-xl">{value}</DialogTrigger>
   <DialogContent>
     <DialogHeader>
       <DialogTitle>Add Activity</DialogTitle>

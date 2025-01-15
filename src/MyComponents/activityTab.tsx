@@ -44,7 +44,7 @@ export function ActivityTab() {
                 </div>
             </div>
         })}
-        <div className="w-[99%] h-28 bg-red-300 text-white rounded-xl flex justify-center items-center">
+        <div className="w-[99%] h-28 bg-green-500 text-white rounded-xl flex justify-center items-center">
             {<AddActivity value={"+ Add more activity"}/>}
         </div>
     </div>)

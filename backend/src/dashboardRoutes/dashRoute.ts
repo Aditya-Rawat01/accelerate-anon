@@ -10,15 +10,26 @@ type dashboardType= {
     completedActivities?:number
 }
 dashboardRouter.get("/",authMiddleware,async(req,res)=>{
-    
-    const userDash=await prisma.dashboard.findFirst({
-    where:{
+    try {
+       const userDash=await prisma.dashboard.findFirst({
+        where:{
         userId:parseInt(req.id)
-    }
+        }, 
+        select:{
+            user:true,
+            completedActivities:true,
+            streak:true
+        }
  })
     res.json({
         "msg":userDash
-    })
+    }) 
+    } catch (error) {
+      res.status(500).json({
+        "msg":"Server Error/ User doesn't exists"
+      })  
+    }
+    
 })
 dashboardRouter.post("/update",authMiddleware,async(req,res)=>{
     const {completedActivities, streak} = req.body
