@@ -21,19 +21,31 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { useCompleteActivity } from "@/datafetchinghooks/completeActivity"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { activityArr } from "./activityTab"
+import { useUpdateActivity } from "@/datafetchinghooks/updateActivity"
 
 export function ActivityCompletion({index}:{index:activityArr}) {
   const [open,setOpen]=useState(false)
     const {mutate, isPending}=useCompleteActivity()
-    function Activityupdation() {
+    const {mutate:mutateActivity, isPending:isPendingActivity}=useUpdateActivity()
+    const isValidProgress=useRef(true)
+    function CompletedActivity() {
         setOpen(false)
-        mutate({activityId:index.id},{
-        
-        })
+        mutate({activityId:index.id})
     }
-    
+
+    function updateActivity() {
+      setOpen(false)
+      const progress=((index.currentDay+1)/(index.totalDays))*100
+      if (progress<=100) {
+        if (progress===100) {
+          isValidProgress.current=false
+        }
+        mutateActivity({activityId:index.id, progress})
+      }
+      
+    }
     return (<>
                         <Drawer open={open} onOpenChange={setOpen}>
                         <DrawerTrigger className="text-[9px] sm:text-sm text-gray-500">Click to open entire activity</DrawerTrigger>
@@ -57,7 +69,7 @@ export function ActivityCompletion({index}:{index:activityArr}) {
                             </DrawerHeader>
                             <DrawerFooter>
                             <div className="flex gap-2 items-center justify-center">
-                                <Button className="w-44 p-1 h-12 border border-1 border-gray-700 rounded-full text-sm hover:bg-green-500 hover:border-none hover:text-white active:opacity-50">Mark today's progress</Button>
+                                <Button className="w-44 p-1 h-12 border border-1 border-gray-700 rounded-full text-sm hover:bg-green-500 hover:border-none hover:text-white active:opacity-50" onClick={updateActivity} disabled={!isValidProgress.current}>Mark today's progress</Button>
                                 
                                 
                                
@@ -72,7 +84,7 @@ export function ActivityCompletion({index}:{index:activityArr}) {
                                       </AlertDialogHeader>
                                       <AlertDialogFooter>
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction onClick={Activityupdation} disabled={isPending}>{isPending?"Completing the activity...":"Continue"}</AlertDialogAction>
+                                        <AlertDialogAction onClick={CompletedActivity} disabled={isPending}>{isPending?"Completing the activity...":"Continue"}</AlertDialogAction>
                                       </AlertDialogFooter>
                                     </AlertDialogContent>
                                   </AlertDialog>

@@ -1,5 +1,5 @@
 import { URI } from "@/assets/URI";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 
@@ -14,15 +14,19 @@ async function updateActivity({activityId,progress}:{activityId:number,progress:
     })
     return res.data.msg 
     } catch (error) {
-       throw new Error((error as any).response.data.msg ) 
+       throw error 
     }
     
 }
 
 
 export function useUpdateActivity() {
+   const queryClient=useQueryClient()
  return useMutation({
     mutationKey:["update"],
-    mutationFn:updateActivity
+    mutationFn:updateActivity,
+    onSuccess:()=>{
+      queryClient.invalidateQueries({queryKey:["getActivity"]})
+   }
  })
 }

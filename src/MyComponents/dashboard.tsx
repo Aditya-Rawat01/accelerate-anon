@@ -1,6 +1,6 @@
-import { usGetDashboard } from "@/datafetchinghooks/useGetdashboard";
+import { useGetDashboard } from "@/datafetchinghooks/useGetdashboard";
 import { Logout } from "./logout";
-import { AxiosError } from "axios";
+
 type userDash= {
     completedActivities: number;
     streak: number;
@@ -13,17 +13,14 @@ type userDash= {
     };
 } | null
 export function Dashboard() {
-    const {data, error, isFetching, isError}=usGetDashboard()
+    const {data, error, isFetching, isError}=useGetDashboard()
     const obj:userDash=data
-    if (isFetching) {
-        return <>Skeleton/loader</>
-    }
-    if (isError) {
-        return <>{error.message}</>
-    }
     return (
         <div className="w-full h-1/4 bg-black text-white flex items-center justify-around">
-            
+            <div className="absolute top-0 left-1/2 -translate-x-1/2">
+                {isFetching && <div>Loader</div>}
+                {isError && <div>{error.message}</div>}
+            </div>
            <div>Hi, <span  className="text-2xl"> {obj?.user.username} </span></div>
            <div className="flex items-center gap-2"> Completed Activities:<span className="text-2xl">{obj?.completedActivities} </span> </div>
            <div className="flex items-center gap-2"> Streak: <span  className="text-2xl"> {obj?.streak} </span> </div>

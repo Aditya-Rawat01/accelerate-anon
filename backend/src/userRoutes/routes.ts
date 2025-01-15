@@ -68,7 +68,7 @@ activityRouter.post("/activity",authMiddleware,async (req,res)=>{   /// post new
                         activity:activity,
                         progress: 0.00,
                         totalDays:totalDays,
-                        currentDay:1,
+                        currentDay:0,
                         workingDays:workingDays,
                         userId: parseInt(req.id)
                     }

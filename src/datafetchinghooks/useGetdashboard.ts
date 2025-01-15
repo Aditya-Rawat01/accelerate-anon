@@ -17,7 +17,7 @@ async function getDash() {
 
 
 
-export function usGetDashboard() {
+export function useGetDashboard() {
     return useQuery({
         queryKey:["getDash"],
         queryFn:getDash,

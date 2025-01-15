@@ -23,6 +23,9 @@ export function useCompleteActivity() {
  return useMutation({
     mutationKey:["update"],
     mutationFn:completeActivity,
-    onSuccess:()=>{queryClient.invalidateQueries({queryKey:["getActivity"]})}
+    onSuccess:()=>{
+      queryClient.invalidateQueries({queryKey:["getActivity"]})
+      queryClient.invalidateQueries({queryKey:["getDash"]})
+   }
  })
 }

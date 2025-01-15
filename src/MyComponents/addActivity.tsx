@@ -38,9 +38,10 @@ export function AddActivity({value}:{value:string}) {
             })
             return
           }
+          setOpen(false)
           mutate({data:data, ref:workingDayRef.current},{
             onSuccess:()=>{
-              setOpen(false)
+              // handle the toast success
               reset({
                 activity:'',
                 TotalDays:1
@@ -48,7 +49,7 @@ export function AddActivity({value}:{value:string}) {
             },
             onError:(error:any)=>{
               console.log(error)
-              setError("root",{
+              setError("root",{  // handle the toast error
               "message":error.response.data.msg
           })
         }
