@@ -6,8 +6,7 @@ import { dashboardSchema } from '../zodSchema'
 export const dashboardRouter=express.Router()
 
 type dashboardType= {
-    streak?:number
-    completedActivities?:number
+    streakDate?:number
 }
 dashboardRouter.get("/",authMiddleware,async(req,res)=>{
     try {
@@ -18,7 +17,8 @@ dashboardRouter.get("/",authMiddleware,async(req,res)=>{
         select:{
             user:true,
             completedActivities:true,
-            streak:true
+            streak:true,
+            streakDate:true
         }
  })
     res.json({
@@ -32,29 +32,24 @@ dashboardRouter.get("/",authMiddleware,async(req,res)=>{
     
 })
 dashboardRouter.post("/update",authMiddleware,async(req,res)=>{
-    const {completedActivities, streak} = req.body
-    const parsedSchema=dashboardSchema.safeParse({completedActivities, streak})
+    const {streakDate} = req.body
+    const parsedSchema=dashboardSchema.safeParse({streakDate})
     if (!parsedSchema.success) {
         res.status(403).json({
             "msg":"Invalid entries"
         })
-    } else {
-        const valuesToUpdate:dashboardType={}
-        if (completedActivities) {
-            valuesToUpdate.completedActivities=completedActivities
-        }
-        if (streak) {
-            valuesToUpdate.streak=streak // entire streak and activities completed will have to be passed from frontend
-        }                              // streak can be updated by using lastUpdatedAt (maybe)
+    } else {                            // streak can be updated by using lastUpdatedAt (maybe)
         try {
-            await prisma.dashboard.update({
+            const dash=await prisma.dashboard.update({
                 where:{
                     userId:parseInt(req.id)
                 },
-                data:valuesToUpdate
+                data:{
+                    streakDate:streakDate
+                }
             })
             res.json({
-                "msg":"updated successfully"
+                "msg":dash
             })  
         } catch (error) {
             res.json({
@@ -99,7 +94,7 @@ dashboardRouter.post("/unsubscribeEmail",authMiddleware,async(req,res)=>{
         }
     })
     res.json({
-        "msg":"Unsuscribed Successfully"
+        "msg":"Unsubscribed Successfully"
     }) 
      
     } catch (error) {
@@ -109,3 +104,47 @@ dashboardRouter.post("/unsubscribeEmail",authMiddleware,async(req,res)=>{
     }
     
 })
+
+    
+// const dash=await axios.post(`${URI}/dash/update`,{
+//     streakDate:res.data.msg.streakDate 
+// },{headers:{
+//     Authorization:localStorage.getItem("token") 
+// }})
+  
+
+// const lastUpdatedAt=new Date(req.body.date).setHours(0,0,0,0)
+//     const todayDate=new Date()
+//     const msDate=todayDate.setHours(0,0,0,0)
+//     const ms=24*60*60*1000
+//     const updateValues:{streak?:{increment:number}|1,streakDate?:Date}={}
+//     if (lastUpdatedAt-msDate<1) {
+//         try {
+//           await prisma.activity.update({
+//             where:{
+//                 id:parseInt(activityId),
+//                 userId:parseInt(req.id)
+//             },
+//             data: {
+//                 progress:progress,
+//                 currentDay:{increment:1}
+//             }
+//         })  
+//         } catch (error) {
+//             res.status(500).json({
+//                 "msg":"Server Error"
+//             })
+//         }
+        
+//     } else {
+//         if ((lastUpdatedAt-msDate)/ms===1) {
+//             console.log("reached here")
+//             updateValues.streak={
+//                 increment:1
+//             }
+//             updateValues.streakDate=todayDate
+//         }
+//             else {
+//                 updateValues.streak=1
+//             }
+//     }

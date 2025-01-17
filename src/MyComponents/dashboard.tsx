@@ -1,9 +1,13 @@
 import { useGetDashboard } from "@/datafetchinghooks/useGetdashboard";
 import { Logout } from "./logout";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { streakDateAtom } from "@/streakDate";
 
 type userDash= {
     completedActivities: number;
     streak: number;
+    streakDate:Date,
     user: {
         id: number;
         email: string;
@@ -15,6 +19,12 @@ type userDash= {
 export function Dashboard() {
     const {data, error, isFetching, isError}=useGetDashboard()
     const obj:userDash=data
+    const setState=useSetRecoilState(streakDateAtom)
+    useEffect(()=>{
+        if (data) {
+            setState(obj!.streakDate)
+        }
+    },[data])
     return (
         <div className="w-full h-1/4 bg-black text-white flex items-center justify-around flex-wrap">
             <div className="absolute top-0 left-1/2 -translate-x-1/2">

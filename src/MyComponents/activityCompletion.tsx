@@ -25,10 +25,13 @@ import { useRef, useState } from "react"
 import { activityArr } from "./activityTab"
 import { useUpdateActivity } from "@/datafetchinghooks/updateActivity"
 import { useToast } from "@/hooks/use-toast"
+import { useRecoilValue } from "recoil"
+import { streakDateAtom } from "@/streakDate"
 
 export function ActivityCompletion({index}:{index:activityArr}) {
   const {toast}=useToast()
   const [open,setOpen]=useState(false)
+  const streakDate=useRecoilValue(streakDateAtom)
     const {mutate, isPending}=useCompleteActivity()
     const {mutate:mutateActivity}=useUpdateActivity()
     const isValidProgress=useRef(true)
@@ -57,7 +60,7 @@ export function ActivityCompletion({index}:{index:activityArr}) {
         if (progress===100) {
           isValidProgress.current=false
         }
-        mutateActivity({activityId:index.id, progress},{
+        mutateActivity({activityId:index.id, progress, streakDate},{
           onSuccess:(data)=>{
             toast({
               title: data,

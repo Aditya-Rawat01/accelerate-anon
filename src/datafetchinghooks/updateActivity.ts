@@ -3,10 +3,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 
-async function updateActivity({activityId,progress}:{activityId:number,progress:number}) {
-    try {
+async function updateActivity({activityId,progress, streakDate}:{activityId:number,progress:number, streakDate:Date}) {
+    
+  try {
       const res=await axios.post(`${URI}/user/progress/${activityId}`,{
-    progress:progress
+    progress:progress,
+    date: streakDate
     },{
       headers:{
          Authorization:localStorage.getItem("token")
@@ -27,6 +29,7 @@ export function useUpdateActivity() {
     mutationFn:updateActivity,
     onSuccess:()=>{
       queryClient.invalidateQueries({queryKey:["getActivity"]})
+      queryClient.invalidateQueries({queryKey:["getDash"]})
    }
  })
 }

@@ -9,7 +9,6 @@ async function postActivity({data,ref}:{data: {
 }, ref:any
 }) {
     try {
-        console.log(ref.current)
         const res=await axios.post(`${URI}/user/activity`,{
               activity:data.activity,
               totalDays:data.TotalDays,

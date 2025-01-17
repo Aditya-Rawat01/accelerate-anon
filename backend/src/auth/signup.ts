@@ -38,10 +38,13 @@ async function signupMiddleware(req:Request, res:Response, next:NextFunction) {
 
 signupRouter.post("/",signupMiddleware,async(req,res)=>{
     try {
+        const today = new Date();
+        const yesterday = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - 1));
       const dash=await prisma.dashboard.create({
         data:{
             streak:0,
-            userId:parseInt(req.id)
+            userId:parseInt(req.id),
+            streakDate:yesterday
         }
       })
       res.json({

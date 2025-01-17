@@ -27,6 +27,5 @@ export const updateUserSchema=zod.object({
 })
 
 export const dashboardSchema= zod.object({
-    streak:zod.number().optional(),
-    completedActivities:zod.number()
+    streak:zod.number()
 })

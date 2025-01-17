@@ -95,21 +95,73 @@ activityRouter.post("/activity",authMiddleware,async (req,res)=>{   /// post new
 activityRouter.post("/progress/:activityId",authMiddleware,async(req,res)=>{  //// post progress in one activity
     const activityId=req.params.activityId
     const progress=parseInt(req.body.progress)
-    if (progress>0 && progress<=100) {
-        const ans=await prisma.activity.update({
+    const lastUpdatedAt=new Date(req.body.date).setHours(0,0,0,0)
+    const todayDate=new Date()
+    const msDate=new Date().setHours(0,0,0,0)
+    const ms=24*60*60*1000
+    const updateValues:{streak?:{increment:number}|1,streakDate?:Date}={streakDate:todayDate}
+
+    if (progress<=100 && progress>0) {
+        
+    if (msDate-lastUpdatedAt<1) {
+        
+        try {
+          await prisma.activity.update({
             where:{
                 id:parseInt(activityId),
                 userId:parseInt(req.id)
             },
             data: {
                 progress:progress,
-                currentDay:{increment:1} // each new req gives final progress in 4 digits like 23.90
-            } //increment day by one
+                currentDay:{increment:1}
+            }
         })
-
         res.json({
             "msg":"Progressed! Keep it up"
         })
+         
+        } catch (error) {
+            res.status(500).json({
+                "msg":"Server Error"
+            })
+        }
+        
+    } else {
+        if ((msDate-lastUpdatedAt)/ms===1) {
+            updateValues.streak={
+                increment:1
+            }
+        }
+        else {
+                updateValues.streak=1
+        }
+        try {
+                await prisma.dashboard.update({
+                    where:{
+                        userId:parseInt(req.id)
+                    },
+                    data:updateValues
+                    })
+                await prisma.activity.update({
+                    where:{
+                        id:parseInt(activityId),
+                        userId:parseInt(req.id)
+                    },
+                    data: {
+                        progress:progress,
+                        currentDay:{increment:1}
+                    }
+                })
+                res.json({
+                    "msg":"Progressed! Keep it up"
+                })   
+        } catch (error) {
+                res.status(500).json({
+                    "msg":"Server error"
+                })
+            }
+        }
+
     } else {
         res.status(403).json({
             "msg":"Invalid progress"

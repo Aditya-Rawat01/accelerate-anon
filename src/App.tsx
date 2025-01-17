@@ -5,12 +5,13 @@ import { User } from './pages/User'
 import { Signup } from './pages/signup'
 import { Signin } from './pages/signin'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
+import {RecoilRoot} from 'recoil'
 function App() {
  
   const queryClient= new QueryClient()
   return (
     <BrowserRouter>
+    <RecoilRoot>
     <QueryClientProvider client={queryClient}>
       <Routes>
         <Route path='/' element={<Homepage/>}/>
@@ -19,6 +20,7 @@ function App() {
         <Route path="/dashboard" element={<User/>}/>
       </Routes>
       </QueryClientProvider>
+      </RecoilRoot>
     </BrowserRouter>
   )
 }

@@ -54,6 +54,7 @@ model Dashboard {
   id Int @default(autoincrement()) @id
   completedActivities Int @default(0)
   streak Int
+  streakDate DateTime?
   userId Int @unique
   user User @relation(fields: [userId], references: [id])
    

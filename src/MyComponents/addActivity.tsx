@@ -56,7 +56,6 @@ export function AddActivity({value}:{value:string}) {
               })
             },
             onError:(error:any)=>{
-              console.log(error)
               toast({
                 title: error.response.data.msg,
                 duration:2000
