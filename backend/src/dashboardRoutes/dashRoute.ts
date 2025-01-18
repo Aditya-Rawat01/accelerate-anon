@@ -60,28 +60,6 @@ dashboardRouter.post("/update",authMiddleware,async(req,res)=>{
     }
     
 })
-dashboardRouter.post("/subscribeEmail",authMiddleware,async(req,res)=>{
-    try {
-      await prisma.user.update({
-        where:{
-            id:parseInt(req.id)
-        },
-        data:{
-            receiveEmail:true
-        }
-    })
-    res.json({
-        "msg":"Subscribed successfully"
-
-    })  
-    } catch (error) {
-        res.status(500).json({
-            "msg":"Server Error"
-        })
-    }
-    })
-
-
 
 dashboardRouter.post("/unsubscribeEmail",authMiddleware,async(req,res)=>{
     try {
@@ -105,46 +83,3 @@ dashboardRouter.post("/unsubscribeEmail",authMiddleware,async(req,res)=>{
     
 })
 
-    
-// const dash=await axios.post(`${URI}/dash/update`,{
-//     streakDate:res.data.msg.streakDate 
-// },{headers:{
-//     Authorization:localStorage.getItem("token") 
-// }})
-  
-
-// const lastUpdatedAt=new Date(req.body.date).setHours(0,0,0,0)
-//     const todayDate=new Date()
-//     const msDate=todayDate.setHours(0,0,0,0)
-//     const ms=24*60*60*1000
-//     const updateValues:{streak?:{increment:number}|1,streakDate?:Date}={}
-//     if (lastUpdatedAt-msDate<1) {
-//         try {
-//           await prisma.activity.update({
-//             where:{
-//                 id:parseInt(activityId),
-//                 userId:parseInt(req.id)
-//             },
-//             data: {
-//                 progress:progress,
-//                 currentDay:{increment:1}
-//             }
-//         })  
-//         } catch (error) {
-//             res.status(500).json({
-//                 "msg":"Server Error"
-//             })
-//         }
-        
-//     } else {
-//         if ((lastUpdatedAt-msDate)/ms===1) {
-//             console.log("reached here")
-//             updateValues.streak={
-//                 increment:1
-//             }
-//             updateValues.streakDate=todayDate
-//         }
-//             else {
-//                 updateValues.streak=1
-//             }
-//     }

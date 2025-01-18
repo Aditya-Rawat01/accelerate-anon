@@ -27,6 +27,7 @@ import { useUpdateActivity } from "@/datafetchinghooks/updateActivity"
 import { useToast } from "@/hooks/use-toast"
 import { useRecoilValue } from "recoil"
 import { streakDateAtom } from "@/streakDate"
+import { EditActivity } from "./editActivity"
 
 export function ActivityCompletion({index}:{index:activityArr}) {
   const {toast}=useToast()
@@ -92,7 +93,11 @@ export function ActivityCompletion({index}:{index:activityArr}) {
                             </div>
                             <DrawerHeader>
                             <DrawerDescription className="flex items-center justify-center">Activity</DrawerDescription>
-                                <DrawerTitle className="flex items-center justify-center text-3xl">{index.activity}</DrawerTitle>
+                                <DrawerTitle className="flex items-center justify-center text-3xl relative">
+                                  <p>{index.activity}</p>
+                                  <EditActivity activityId={index.id} days={index.totalDays} activity={index.activity} currentDay={index.currentDay} workingDays={index.workingDays}/>  
+                                </DrawerTitle>
+                                
                                 <div className="w-full h-20 flex items-center justify-center"><DrawerTitle className="w-full sm:w-1/2 md:w-1/4 flex items-center justify-around">{index.workingDays.map((index)=><div key={index} className="rounded-full w-[40px] border border-1 border-gray-400 text-xs font-normal flex items-center justify-center">{index}</div>)}</DrawerTitle></div>
                                 <DrawerTitle className="font-normal flex justify-center"> Day: {index.currentDay}/ {index.totalDays}</DrawerTitle>
                                 <DrawerTitle className="font-normal h-28 md:mt-5 text-2xl flex items-center justify-center">Progress: {index.progress} %</DrawerTitle>

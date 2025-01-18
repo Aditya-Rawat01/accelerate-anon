@@ -25,7 +25,9 @@ async function signinMiddleware(req:Request, res:Response, next:NextFunction) {
             const token=jwt.sign({id},process.env.JWT_SECRET as string,{
                 expiresIn:'7d'
             })
+            req.id=id as unknown as string
             req.token=token
+            req.receiveEmail=userExists.receiveEmail
             next()
         } else if (userExists?.password!==password && userExists) {
             res.status(403).json({
@@ -48,7 +50,18 @@ async function signinMiddleware(req:Request, res:Response, next:NextFunction) {
 }
 
 
-signinRouter.post("/",signinMiddleware,(req,res)=>{
+signinRouter.post("/",signinMiddleware,async(req,res)=>{
+    if (!req.receiveEmail) {
+     await prisma.user.update({
+        where:{
+            id:parseInt(req.id)
+        },
+        data:{
+            receiveEmail:true
+        }
+    })   
+    }
+    
     res.json({
     
         "msg":"Signed in successfully",

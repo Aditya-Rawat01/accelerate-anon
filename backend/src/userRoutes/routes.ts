@@ -7,11 +7,6 @@ import { activitySchema, enumArray, updateUserSchema } from '../zodSchema'
 export const activityRouter=express.Router()
 
 
-interface dataInterface {
-    workingDays?:enumArray[],
-    activity?:string
-}
-
 activityRouter.get("/activity",authMiddleware,async(req,res)=>{ /// get all 3 activity details
     try {
         const user=await prisma.user.findFirst({
@@ -149,7 +144,8 @@ activityRouter.post("/progress/:activityId",authMiddleware,async(req,res)=>{  //
                     },
                     data: {
                         progress:progress,
-                        currentDay:{increment:1}
+                        currentDay:{increment:1},
+                        lastUpdatedAt:todayDate
                     }
                 })
                 res.json({
@@ -202,34 +198,32 @@ activityRouter.post("/completed/:activityId",authMiddleware,async(req,res)=>{   
 })
 activityRouter.post("/update/:activityId",authMiddleware,async(req,res)=>{
     const activityId=req.params.activityId
-    const {workingDays, activity}=req.body
-    const parsed=updateUserSchema.safeParse({workingDays, activity})
+    console.log(activityId)
+    const {workingDays, activity, totalDays, progress}=req.body
+    const parsed=updateUserSchema.safeParse({workingDays, activity, totalDays,progress})
     if (!parsed.success) {
             res.status(411).json({
                 "msg":"Invalid Entries. Please provide correct formats"
             }) 
             return;}
-    const dataToUpdate:dataInterface={};
-
-    if (workingDays!==undefined) {
-            dataToUpdate.workingDays=workingDays
-        }
-    if (activity!==undefined) {
-            dataToUpdate.activity=activity
-        }
-       
     try {                                       //    Object.keys(dataToUpdate).length==0 or activity id can be wrong
         await prisma.activity.update({
             where:{
                 id:parseInt(activityId),
                 userId: parseInt(req.id)
             },
-            data:dataToUpdate
+            data:{
+                workingDays,
+                activity,
+                totalDays,
+                progress
+            }
         })
         res.json({
-            "msg":"Progressed! Keep it up."
+            "msg":"Values Updated"
         })
     } catch {
+        console.log("why here")
         res.json({
             "msg":"Nothing to update/ Wrong activityId"
         })
@@ -242,14 +236,21 @@ activityRouter.post("/update/:activityId",authMiddleware,async(req,res)=>{
 
 activityRouter.delete("/delete/:activityId",authMiddleware,async(req,res)=>{    /// delete one activity
     const activityId=req.params.activityId
-    const ans=await prisma.activity.delete({
-        where:{
-            id:parseInt(activityId),
-            userId:parseInt(req.id)
-        }
-    })
- 
-    res.json({
-        "msg":"Activity deleted successfully"
-    })
+    try {
+        const ans=await prisma.activity.delete({
+            where:{
+                id:parseInt(activityId),
+                userId:parseInt(req.id)
+            }
+        })
+     
+        res.json({
+            "msg":"Activity deleted successfully"
+        })
+    } catch (error) {
+       res.status(500).json({
+        "msg":"Server Error"
+       }) 
+    }
+    
 })

@@ -22,8 +22,10 @@ export const activitySchema=zod.object({
     })
 
 export const updateUserSchema=zod.object({
-    workingDays:zod.array(workingDay).optional(),
-    activity: zod.string().optional()
+    workingDays:zod.array(workingDay),
+    activity: zod.string(),
+    totalDays:zod.number(),
+    progress:zod.number()
 })
 
 export const dashboardSchema= zod.object({
