@@ -7,6 +7,15 @@ export default {
   ],
   theme: {
   	extend: {
+		backgroundImage:{
+			'custom':"url('./assets/pexels.jpg')"
+		},
+		boxShadow:{
+			'custom':'3px 3px 3px #2563eb'
+		},
+		backgroundPosition: {
+			'custom-left': '30px 0px',
+		  },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
