@@ -8,7 +8,8 @@ export default {
   theme: {
   	extend: {
 		backgroundImage:{
-			'custom':"url('./assets/pexels.jpg')"
+			'custom':"url('./assets/pexels.jpg')",
+			'custom2nd':"url('./assets/astronaut.png')"
 		},
 		boxShadow:{
 			'custom':'3px 3px 3px #2563eb'
