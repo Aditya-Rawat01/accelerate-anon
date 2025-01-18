@@ -42,42 +42,49 @@ activityRouter.post("/activity",authMiddleware,async (req,res)=>{   /// post new
         workingDays
     })
     if (validSchema.success) {
-        await prisma.$transaction(async (prisma)=>{
-            const activityCount=await prisma.activity.count({
-                where:{
-                    userId:parseInt(req.id),  
-                    progress: {                 // this makes sure that active activity stays <=3
-                        not:100
-                    }
-                },
-            })
-            if (activityCount===3) {
-                res.status(403).json({
-                    "msg":"Focus on the pending 3 tasks first"
+        try {
+            await prisma.$transaction(async (prisma)=>{
+                const activityCount=await prisma.activity.count({
+                    where:{
+                        userId:parseInt(req.id),  
+                        progress: {                 // this makes sure that active activity stays <=3
+                            not:100
+                        }
+                    },
                 })
-                return
-            } else {
-                try {
-                    await prisma.activity.create({
-                    data:{
-                        activity:activity,
-                        progress: 0.00,
-                        totalDays:totalDays,
-                        currentDay:0,
-                        workingDays:workingDays,
-                        userId: parseInt(req.id)
-                    }
-                })
-                res.json({
-                    "msg":"New activity added"
-                })
-                } catch (error) {
-                    res.status(500).json({
-                        "msg":"Query crashed. Retry again"
+                if (activityCount===3) {
+                    res.status(403).json({
+                        "msg":"Focus on the pending 3 tasks first"
                     })
-                    return;
-                }}
-        })
+                    return
+                } else {
+                    try {
+                        await prisma.activity.create({
+                        data:{
+                            activity:activity,
+                            progress: 0.00,
+                            totalDays:totalDays,
+                            currentDay:0,
+                            workingDays:workingDays,
+                            userId: parseInt(req.id)
+                        }
+                    })
+                    res.json({
+                        "msg":"New activity added"
+                    })
+                    } catch (error) {
+                        res.status(500).json({
+                            "msg":"Query crashed. Retry again"
+                        })
+                        return;
+                    }}
+            })
+        } catch (error) {
+            res.status(500).json({
+                "msg":"Server Error"
+            })
+        }
+        
         
     } else {
         res.status(403).json({
@@ -89,7 +96,7 @@ activityRouter.post("/activity",authMiddleware,async (req,res)=>{   /// post new
 
 activityRouter.post("/progress/:activityId",authMiddleware,async(req,res)=>{  //// post progress in one activity
     const activityId=req.params.activityId
-    const progress=parseInt(req.body.progress)
+    const progress=parseFloat(req.body.progress)
     const lastUpdatedAt=new Date(req.body.date).setHours(0,0,0,0)
     const todayDate=new Date()
     const msDate=new Date().setHours(0,0,0,0)
@@ -198,7 +205,6 @@ activityRouter.post("/completed/:activityId",authMiddleware,async(req,res)=>{   
 })
 activityRouter.post("/update/:activityId",authMiddleware,async(req,res)=>{
     const activityId=req.params.activityId
-    console.log(activityId)
     const {workingDays, activity, totalDays, progress}=req.body
     const parsed=updateUserSchema.safeParse({workingDays, activity, totalDays,progress})
     if (!parsed.success) {
@@ -223,7 +229,6 @@ activityRouter.post("/update/:activityId",authMiddleware,async(req,res)=>{
             "msg":"Values Updated"
         })
     } catch {
-        console.log("why here")
         res.json({
             "msg":"Nothing to update/ Wrong activityId"
         })

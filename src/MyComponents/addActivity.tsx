@@ -33,7 +33,7 @@ export function AddActivity({value}:{value:string}) {
       TotalDays:1
     }
   })
-  const {mutate}=usePostActivity()
+  const {mutate, isPending}=usePostActivity()
   const onsubmit:SubmitHandler<formFields>=async(data)=>{
     try {
           if (workingDayRef.current.length===0) {
@@ -70,6 +70,9 @@ export function AddActivity({value}:{value:string}) {
           })
   }
   }
+    if (isPending) {
+      return <div className="text-xl">Saving Changes...</div>
+    }
     return (
       <>
         <Dialog open={open} onOpenChange={setOpen}>

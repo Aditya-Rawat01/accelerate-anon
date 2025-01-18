@@ -98,7 +98,7 @@ export function ActivityCompletion({index}:{index:activityArr}) {
                                   <EditActivity activityId={index.id} days={index.totalDays} activity={index.activity} currentDay={index.currentDay} workingDays={index.workingDays}/>  
                                 </DrawerTitle>
                                 
-                                <div className="w-full h-20 flex items-center justify-center"><DrawerTitle className="w-full sm:w-1/2 md:w-1/4 flex items-center justify-around">{index.workingDays.map((index)=><div key={index} className="rounded-full w-[40px] border border-1 border-gray-400 text-xs font-normal flex items-center justify-center">{index}</div>)}</DrawerTitle></div>
+                                <div className="w-full h-20 flex items-center justify-center"><DrawerTitle className="sm:w-fit gap-1 sm:gap-2 flex items-center justify-around">{index.workingDays.map((index)=><div key={index} className="rounded-full w-[38px] sm:w-[40px] border border-1 border-gray-400 text-xs font-normal flex items-center justify-center">{index}</div>)}</DrawerTitle></div>
                                 <DrawerTitle className="font-normal flex justify-center"> Day: {index.currentDay}/ {index.totalDays}</DrawerTitle>
                                 <DrawerTitle className="font-normal h-28 md:mt-5 text-2xl flex items-center justify-center">Progress: {index.progress} %</DrawerTitle>
                                 

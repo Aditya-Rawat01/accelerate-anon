@@ -10,7 +10,7 @@ type props ={
     activityId:number
 }
 async function renameActivity({activity,totalDays,workingDays, currentDay, activityId}:props) {
-    let progress=Math.round((currentDay/totalDays)*100)
+    let progress=parseFloat(((currentDay/totalDays)*100).toFixed(2))
     if (currentDay>totalDays) {
         progress=100 
         totalDays=currentDay

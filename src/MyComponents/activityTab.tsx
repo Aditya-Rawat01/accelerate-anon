@@ -24,8 +24,10 @@ export function ActivityTab() {
         return <>{error?.message}</>
     }
      return (
-    <div className="w-full h-4/5 flex flex-col gap-2 items-center">
-        {isFetching && <div>Re-configuring details</div>}
+    <div className="w-full flex flex-col gap-2 items-center mt-2">
+        {isFetching && <div className="h-fit flex justify-center gap-2 items-center">
+            <div className="w-5 h-5 border-[3px] border-t-blue-500 border-b-orange-500  rounded-full animate-spin"></div>
+            Re-configuring details</div>}
         {data?.map((index:activityArr)=>{
             return <div key={index.id} className="w-[99%] relative h-28 border border-dotted border-gray-700 rounded-2xl grid grid-cols-12 grid-rows-12 ">
                 <div className="row-start-6 text-xl place-self-center col-span-12">Activity:{index.activity}</div>

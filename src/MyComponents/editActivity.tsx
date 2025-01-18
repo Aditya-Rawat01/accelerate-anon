@@ -145,7 +145,7 @@ function AlertDialogopen({activityId}:{activityId:number}) {
       </AlertDialogHeader>
       <AlertDialogFooter>
         <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <AlertDialogAction className="bg-red-600 hover:bg-red-500 mt-2 sm:mt-0" onClick={DeleteActivity} disabled={isPending}>{isPending?"Completing the activity...":"Continue"}</AlertDialogAction>
+        <AlertDialogAction className="bg-red-600 hover:bg-red-500 mt-2 sm:mt-0" onClick={DeleteActivity} disabled={isPending}>{isPending?"Deleting the activity...":"Continue"}</AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   </AlertDialog>)
