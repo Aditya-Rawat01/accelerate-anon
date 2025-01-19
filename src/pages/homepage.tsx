@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Signup } from "./signup";
-
+import astronaut from "../assets/astronaut.png"
 export function Homepage() {
     return (
     <div className='h-screen'>
@@ -33,11 +33,14 @@ export function Homepage() {
         </div>
         
 
-        <div className="w-full bg-black text-white h-screen flex flex-col p-5 gap-5 items-center justify-center font-light">
-          <p className="text-3xl">Feeling overwhelmed ?</p>
-          <p>We all have those moments where life feels like a juggling act—too many tasks, too little time. It’s okay to pause, breathe, and take it one step at a time.</p>
-          <p>"We overestimate what we can do in a day but underestimate what we can achieve in a year."</p>
-          <p>Our platform is here to help you stay on track, motivated, and moving forward—one step at a time.</p>
+        <div className="w-full bg-black text-white h-screen flex flex-col  gap-5 p-5 items-center justify-center font-light relative overflow-hidden">
+          <div><img src={astronaut}  className="absolute top-0 sm:top-10 w-96 h-32 left-[35%] sm:left-1/2 rounded-full"></img></div>
+          <p className="text-3xl">Feeling overwhelmed?</p>
+          <div className="flex flex-col gap-5 lg:w-2/3">
+              <p>We all have those moments where life feels like a juggling act—too many tasks, too little time. It’s okay to pause, breathe, and take it one step at a time.</p>
+              <p>"We overestimate what we can do in a day but underestimate what we can achieve in a year."</p>
+              <p>Our platform is here to help you stay on track, motivated, and moving forward—one step at a time.</p>
+          </div>
         </div>
 
 
