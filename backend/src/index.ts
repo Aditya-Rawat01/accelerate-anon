@@ -33,7 +33,7 @@ app.use("/auth",authRouter)
 app.use("/user",activityRouter)
 app.use("/dash",dashboardRouter)
 
-///////emailScheduler() // cron job + nodemailer logic
+emailScheduler() // cron job + nodemailer logic
 
 app.listen(3000)
 // signup (done)

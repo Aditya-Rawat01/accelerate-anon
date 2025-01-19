@@ -60,7 +60,7 @@ export function EditActivity({days,activity, currentDay, workingDays, activityId
       return <div className="w-full h-[80vh] absolute top-0 left-1/2 -translate-x-1/2 rounded-xl bg-white flex pt-6 justify-center">Updating Activity... Please wait</div>
     }
 
-    return <div className="absolute right-[10%] sm:right-[30%] md:right-[35%] text-sm  font-light hover:cursor-pointer">
+    return <div className="absolute right-[20%] sm:right-[30%] md:right-[35%] text-sm  font-light hover:cursor-pointer">
         <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" className="outline outline-1 outline-gray-400">Edit</Button>

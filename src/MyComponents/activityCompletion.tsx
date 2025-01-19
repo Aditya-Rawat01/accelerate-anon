@@ -92,10 +92,13 @@ export function ActivityCompletion({index}:{index:activityArr}) {
                                 </DrawerClose>
                             </div>
                             <DrawerHeader>
-                            <DrawerDescription className="flex items-center justify-center">Activity</DrawerDescription>
-                                <DrawerTitle className="flex items-center justify-center text-3xl relative">
+                            <DrawerDescription className="flex items-center justify-center">
+                              Activity
+                              <EditActivity activityId={index.id} days={index.totalDays} activity={index.activity} currentDay={index.currentDay} workingDays={index.workingDays}/>
+                            </DrawerDescription>
+                                <DrawerTitle className="flex items-center justify-center text-2xl md:text-3xl relative">
                                   <p>{index.activity}</p>
-                                  <EditActivity activityId={index.id} days={index.totalDays} activity={index.activity} currentDay={index.currentDay} workingDays={index.workingDays}/>  
+                                    
                                 </DrawerTitle>
                                 
                                 <div className="w-full h-20 flex items-center justify-center"><DrawerTitle className="sm:w-fit gap-1 sm:gap-2 flex items-center justify-around">{index.workingDays.map((index)=><div key={index} className="rounded-full w-[38px] sm:w-[40px] border border-1 border-gray-400 text-xs font-normal flex items-center justify-center">{index}</div>)}</DrawerTitle></div>
@@ -110,7 +113,7 @@ export function ActivityCompletion({index}:{index:activityArr}) {
                                 
                                
                                 <AlertDialog>
-                                    <AlertDialogTrigger className="w-44 h-12 border border-1 border-gray-700 rounded-full text-sm hover:bg-green-500 hover:border-none hover:text-white active:opacity-50 overflow-hidden">Mark as completed</AlertDialogTrigger>
+                                    <AlertDialogTrigger className="w-44 h-12 p-1 border border-1 border-gray-700 rounded-full text-sm hover:bg-green-500 hover:border-none hover:text-white active:opacity-50 overflow-hidden">Mark as completed</AlertDialogTrigger>
                                     <AlertDialogContent>
                                       <AlertDialogHeader>
                                         <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

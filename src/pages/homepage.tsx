@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Signup } from "./signup";
 import astronaut from "../assets/astronaut.png"
 export function Homepage() {
     return (
@@ -21,14 +20,14 @@ export function Homepage() {
 
 
 
-        <div className="bg-custom w-screen h-screen bg-cover bg-left bg-no-repeat flex flex-col text-white justify-center">
-        <div className="text-sm w-3/5 flex flex-col gap-2 pl-2 text-[13px] font-extralight leading-4">
+        <div className="bg-custom w-screen h-screen bg-cover md:bg-custom2nd md:bg-contain md:bg-right md:bg-slate-950 bg-left bg-no-repeat flex flex-col text-white justify-center">
+        <div className="text-sm w-3/5 flex flex-col gap-2 pl-2 sm:pl-4 lg:items-center text-[13px] font-extralight leading-4">
           <p className="text-[24px] font-extralight leading-8">Need reminder for your goals?</p>
           <p>Staying on track can be tough, but with the right tools, it's <strong>possible.</strong></p>
           <p>Meet <strong>Accelerate Anon</strong> – your personal habit tracker</p> 
           <p>Whether it's fitness, learning, or achieving your dreams, we've got your back.</p>
           <p>Set your goals, stay motivated, and see real progress. Take the first step today!</p>
-          <button className="bg-transparent text-white rounded p-2 shadow-custom font-medium w-48 mt-2 hover:bg-yellow-500">Try Accelerate Anon</button>
+          <Link to={"/signup"} ><button className="bg-transparent text-white rounded p-2 shadow-custom font-medium w-48 mt-2 hover:bg-yellow-500">Try Accelerate Anon</button></Link>
         </div> 
         </div>
         
@@ -101,9 +100,9 @@ export function Homepage() {
                 </div>
           </div>
         </div>
-       <div className="h-1/2 bg-black text-white w-full relative flex items-center justify-center  gap-5 flex-col">
+       <div className="h-2/3 bg-black text-white w-full relative flex items-center justify-center  gap-5 flex-col">
         <p className="text-2xl">So what's you waiting for?</p>
-        <button className="bg-transparent text-white rounded p-2 shadow-custom font-medium w-48 mt-2 hover:bg-yellow-500">Try Accelerate Anon</button>
+        <Link to={"/signup"} ><button className="bg-transparent text-white rounded p-2 shadow-custom font-medium w-48 mt-2 hover:bg-yellow-500">Try Accelerate Anon</button></Link>
        <div className="absolute bottom-0 flex justify-around items-center w-full bg-black">
         <p className="text-xs font-light text-gray-500">Accelerate anon @ infinity</p>
         <p className="text-xs font-light text-gray-500">Made by Aditya</p>

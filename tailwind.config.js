@@ -9,10 +9,13 @@ export default {
   	extend: {
 		backgroundImage:{
 			'custom':"url('./assets/pexels.jpg')",
-			'custom2nd':"url('./assets/astronaut.png')"
+			'custom2nd':"url('./assets/accelerate.jpg')",
+			'custom3rd':"url('./assets/bighelmetclear.jpg')",
+			'custom4th':"url('./assets/blackhole.jpg')"
 		},
 		boxShadow:{
-			'custom':'3px 3px 3px #2563eb'
+			'custom':'3px 3px 3px #2563eb',
+			'custom2nd':'3px 3px 3px #9333ea'
 		},
 		backgroundPosition: {
 			'custom-left': '30px 0px',

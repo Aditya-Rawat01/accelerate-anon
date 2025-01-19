@@ -52,17 +52,19 @@ export function Signup() {
         
     }
     return (
-    <form onSubmit={handleSubmit(onsubmit)}  className='w-1/2 h-1/2 rounded-md bg-red-400 flex flex-col items-center justify-center'>
-        
-        <input {...register("username")} type='text' placeholder='Username'/>
-        {errors.username && <div>{errors.username.message}</div> }
-        <input {...register("email")} type='text' placeholder='Email'/>
-        {errors.email && <div>{errors.email.message}</div> }
-        <input {...register("password")} type='text' placeholder='Password'/>
-        {errors.password  && <div>{errors.password .message}</div> }
-        <button type='submit'  className='bg-black text-white p-3 rounded-lg' disabled={isSubmitting}>{isSubmitting?"Submitting please wait...":"Submit"}</button> 
-        <p className='text-sm'>Already Signed up? Try <Link to={"/signin"} className='underline-offset-1 underline'>signing in</Link></p>
-    </form>
-    
+        <div className='w-screen h-screen bg-custom3rd bg-center bg-cover md:bg-black md:bg-none flex items-center justify-center text-white'>
+            <form  onSubmit={handleSubmit(onsubmit)}  className='w-full  backdrop-blur-[3px] h-full md:w-1/2 md:h-1/2 rounded-md flex flex-col gap-2 items-center justify-center'>
+                <p className='text-3xl'>Signup</p>
+                <input {...register("username")} type='text' placeholder='Username' className='rounded-md p-2 text-black'/>
+                {errors.username && <div>{errors.username.message}</div> }
+                <input {...register("email")} type='text' placeholder=' Email' className='rounded-md p-2 text-black'/>
+                {errors.email && <div>{errors.email.message}</div> }
+                <input {...register("password")} type='text' placeholder=' Password' className='rounded-md p-2 text-black'/>
+                {errors.password  && <div>{errors.password .message}</div> }
+                <button type='submit'  className='bg-black className="bg-transparent text-white rounded p-2 shadow-custom font-medium w-48 mt-2 hover:bg-yellow-500' disabled={isSubmitting}>{isSubmitting?"Submitting please wait...":"Submit"}</button> 
+                <p className='text-sm'>Already Signed up? Try <Link to={"/signin"} className='underline-offset-1 underline '>signing in</Link></p>
+            </form>
+            <div className='invisible md:visible md:w-1/2 h-full bg-custom3rd bg-cover bg-center'></div>
+        </div>
 )
 }

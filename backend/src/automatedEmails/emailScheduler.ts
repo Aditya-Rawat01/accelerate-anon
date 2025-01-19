@@ -5,7 +5,7 @@ import { MailSelector } from './mailSelector'
 
 
 export function emailScheduler() {
-    cron.schedule("* * * * *",async()=>{ /// change it from every minute to more rando value like every monday or sat or more customized ones
+    cron.schedule("* * * * *",async()=>{ /// “At 10:01 on Monday and Saturday.” 1 10 * * 1,6
         try {
             const users=await prisma.user.findMany({
                 select:{
