@@ -12,7 +12,6 @@ const client_1 = require("@prisma/client");
 const dashRoute_1 = require("./dashboardRoutes/dashRoute");
 const emailScheduler_1 = require("./automatedEmails/emailScheduler");
 if (process.env.NODE_ENV !== 'production') {
-    console.log("aa");
     require('dotenv').config();
 }
 const app = (0, express_1.default)();
@@ -30,7 +29,7 @@ app.use("/auth", auth_1.authRouter);
 app.use("/user", routes_1.activityRouter);
 app.use("/dash", dashRoute_1.dashboardRouter);
 (0, emailScheduler_1.emailScheduler)(); // cron job + nodemailer logic
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 // signup (done)
 //sign in  (done)
 //get all info (done)
