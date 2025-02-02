@@ -4,6 +4,8 @@ import {SubmitHandler, useForm } from 'react-hook-form'
 import zod from 'zod'
 import { URI } from '../assets/URI';
 import { Link, useNavigate } from 'react-router-dom';
+import { Toaster } from '@/components/ui/toaster';
+import { useToast } from '@/hooks/use-toast';
 const userSignup=zod.object({
     username: zod.string().min(3,"Username must be greater than or equal to 3 characters"),
     email: zod.string().email("Provide valid Email").transform((val)=>val.toLowerCase()),
@@ -22,6 +24,7 @@ export interface ErrorWorkableSchema {
 type formFields=zod.infer<typeof userSignup>
 export function Signup() {
     const router=useNavigate()
+    const {toast}=useToast()
     const {register, handleSubmit, formState:{errors, isSubmitting}, setError}=useForm<formFields>({
         resolver:zodResolver(userSignup)
     });
@@ -37,18 +40,43 @@ export function Signup() {
            
         } catch (error:ErrorWorkableSchema|unknown) {
           
-            const ErrorVal=(error as ErrorWorkableSchema) // bad practice
-            if (ErrorVal.status===409) {
-                setError("email",{
-                message:ErrorVal.response.data.msg
-            })}
-            else {
-                setError("root",{
-                    message:ErrorVal.response.data.msg
-                })
-            }
             
+          
+    if (axios.isAxiosError(error)) {
+        if (error.response) {
+            // Server responded but with an error status
+            toast({
+                title: "Error occurred",
+                description: error.response.data.msg || "Something went wrong",
+                duration: 2000
+            });
+
+            if (error.response.status === 404) {
+                setError("email", { message: error.response.data.msg });
+            } else if (error.response.status === 403) {
+                setError("password", { message: error.response.data.msg });
+            } else {
+                setError("root", { message: error.response.data.msg });
+            }
+        } else {
+            // No response received (network error)
+            setError("root",{message:"Error occured"})
+            toast({
+                title: "Network Error",
+                description: "Cannot connect to the server. Please try again later.",
+                duration: 2000
+            });
         }
+    } else {
+        // Unexpected non-Axios error
+        setError("root",{message:"Error occured"})
+        toast({
+            title: "Unexpected Error",
+            description: "An unexpected error occurred. Please try again.",
+            duration: 2000
+        });
+    }
+}
         
     }
     return (
@@ -65,6 +93,7 @@ export function Signup() {
                 <p className='text-sm'>Already Signed up? Try <Link to={"/signin"} className='underline-offset-1 underline '>signing in</Link></p>
             </form>
             <div className='invisible md:visible md:w-1/2 h-full bg-custom3rd bg-cover bg-center'></div>
+            <Toaster/>
         </div>
 )
 }

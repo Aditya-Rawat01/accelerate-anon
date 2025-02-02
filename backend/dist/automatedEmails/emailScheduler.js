@@ -18,7 +18,7 @@ const nodemailer_1 = __importDefault(require("nodemailer"));
 const __1 = require("..");
 const mailSelector_1 = require("./mailSelector");
 function emailScheduler() {
-    node_cron_1.default.schedule("* * * * *", () => __awaiter(this, void 0, void 0, function* () {
+    node_cron_1.default.schedule("0 22,8 * * 1,5", () => __awaiter(this, void 0, void 0, function* () {
         try {
             const users = yield __1.prisma.user.findMany({
                 select: {

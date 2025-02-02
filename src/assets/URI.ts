@@ -1,1 +1,2 @@
-export const URI="https://accelerate-anon-production.up.railway.app"
+export const URI="http://localhost:3000"
+//https://accelerate-anon-production.up.railway.app

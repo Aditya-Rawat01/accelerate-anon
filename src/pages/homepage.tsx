@@ -12,8 +12,8 @@ export function Homepage() {
             
         </div>
         <div className="w-fit flex sm:gap-5 items-center  text-xs sm:text-base">
-          <Link to={"/signup"} className="hover:bg-white hover:text-black p-2 rounded-sm">Signup</Link>
-          <Link to={"/signin"} className="hover:bg-white hover:text-black p-2 rounded-sm">Signin</Link>
+          <Link to={"/signup"} className="hover:bg-white hover:text-black p-2 rounded-sm bg-white bg-opacity-50">Signup</Link>
+          <Link to={"/signin"} className="hover:bg-white hover:text-black p-2 rounded-sm bg-white bg-opacity-50">Signin</Link>
         </div>
       </div>
 

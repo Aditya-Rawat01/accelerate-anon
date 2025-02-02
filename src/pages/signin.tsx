@@ -4,6 +4,8 @@ import {SubmitHandler, useForm } from 'react-hook-form'
 import zod from 'zod'
 import { URI } from '../assets/URI';
 import { Link, useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
+import { Toaster } from '@/components/ui/toaster';
 const userSignin=zod.object({
     email: zod.string().email("Provide valid Email").transform((val)=>val.toLowerCase()),
     password: zod.string().min(5, "Provide 5 or more characters")
@@ -21,6 +23,7 @@ interface ErrorWorkableSchema {
 type formFields=zod.infer<typeof userSignin>
 export function Signin() {
     const router=useNavigate()
+    const {toast}=useToast()
     const {register, handleSubmit, formState:{errors, isSubmitting}, setError}=useForm<formFields>({
         resolver:zodResolver(userSignin)
     });
@@ -34,23 +37,43 @@ export function Signin() {
             router("/dashboard")
             
         } catch (error:ErrorWorkableSchema|unknown) {
-            const ErrorVal=(error as ErrorWorkableSchema) // bad practice
-            if (ErrorVal.status===404) {
-                setError("email",{
-                message:ErrorVal.response.data.msg
-            })}
-            else if (ErrorVal.status===403) {
-                setError("password",{
-                    message:ErrorVal.response.data.msg
-                })
+
+          
+    if (axios.isAxiosError(error)) {
+        if (error.response) {
+            // Server responded but with an error status
+            toast({
+                title: "Error occurred",
+                description: error.response.data.msg || "Something went wrong",
+                duration: 2000
+            });
+
+            if (error.response.status === 404) {
+                setError("email", { message: error.response.data.msg });
+            } else if (error.response.status === 403) {
+                setError("password", { message: error.response.data.msg });
+            } else {
+                setError("root", { message: error.response.data.msg });
             }
-            else {
-                setError("root",{
-                    message:ErrorVal.response.data.msg
-                })
-            }
-            
+        } else {
+            // No response received (network error)
+            setError("root",{message:"Error occured"})
+            toast({
+                title: "Network Error",
+                description: "Cannot connect to the server. Please try again later.",
+                duration: 2000
+            });
         }
+    } else {
+        // Unexpected non-Axios error
+        setError("root",{message:"Error occured"})
+        toast({
+            title: "Unexpected Error",
+            description: "An unexpected error occurred. Please try again.",
+            duration: 2000
+        });
+    }
+}
         
     }
     return (
@@ -65,6 +88,7 @@ export function Signin() {
         <p className='text-sm'>New here? Try <Link to={"/signup"} className='underline-offset-1 underline'>signing up</Link></p>
     </form>
     <div className='invisible md:visible md:w-1/2 h-full bg-custom4th bg-cover bg-center'></div>
+    <Toaster/>
     </div>
 )
 }
