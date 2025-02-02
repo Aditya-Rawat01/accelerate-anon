@@ -6,7 +6,9 @@ import { activityRouter } from './userRoutes/routes'
 import {  PrismaClient } from '@prisma/client'
 import { dashboardRouter } from './dashboardRoutes/dashRoute'
 import { emailScheduler } from './automatedEmails/emailScheduler'
-configDotenv()
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const app=express()
 //----------------------------- Uncomment the cron job function-------
 export const prisma=new PrismaClient()
@@ -35,7 +37,7 @@ app.use("/dash",dashboardRouter)
 
 emailScheduler() // cron job + nodemailer logic
 
-app.listen(3000)
+app.listen(process.env.PORT||3000)
 // signup (done)
 //sign in  (done)
 //get all info (done)

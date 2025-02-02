@@ -7,12 +7,14 @@ exports.prisma = void 0;
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const auth_1 = require("./auth/auth");
-const dotenv_1 = require("dotenv");
 const routes_1 = require("./userRoutes/routes");
 const client_1 = require("@prisma/client");
 const dashRoute_1 = require("./dashboardRoutes/dashRoute");
 const emailScheduler_1 = require("./automatedEmails/emailScheduler");
-(0, dotenv_1.configDotenv)();
+if (process.env.NODE_ENV !== 'production') {
+    console.log("aa");
+    require('dotenv').config();
+}
 const app = (0, express_1.default)();
 //----------------------------- Uncomment the cron job function-------
 exports.prisma = new client_1.PrismaClient();
