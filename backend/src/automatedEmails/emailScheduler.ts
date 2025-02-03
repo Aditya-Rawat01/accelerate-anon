@@ -26,11 +26,11 @@ export function emailScheduler() {
               for (let i=0;i<users.length;i++) {
                 const randomUser=users[i]
                 if (randomUser.receiveEmail===false) {
-                  return 
+                  continue 
                 }
                 if (randomUser.activity.length===0) {
                   console.log(`No activity found for user: ${randomUser.username}`)
-                  return
+                  continue
                 }
   
                 const randomActivity=randomUser.activity[Math.floor((Math.random()*randomUser.activity.length))].activity
@@ -47,6 +47,9 @@ export function emailScheduler() {
         }
         
         
+        },{
+          scheduled:true,
+          timezone:"Asia/Delhi"
         })
 }
 
@@ -76,7 +79,7 @@ function MailSender(email:string,activity:string) {
            console.log("Error occured while sending mails: ", err.message)
         }
          else {
-            console.log("Mail sent successfully: ", info.response)
+            console.log(`Mail sent successfully at ${new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata"})}, info.response`)
         }
     })
 }
